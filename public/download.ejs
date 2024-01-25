@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DigitalOcean Spaces Tutorial</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <% const message = "Olá, mundo!" %>
+    <script>
+        window.onload = function() {
+        console.log(photoName)
+            var photo = <%- JSON.stringify(message) %> ;
+
+            var file = photo + 'jpg'
+            var link = document.createElement('a');
+            link.href = 'https://geea-storage.nyc3.cdn.digitaloceanspaces.com/boticario-tmj/'+file;
+            link.download = file;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+    </script>
+    <!-- <a href="https://geea-storage.nyc3.cdn.digitaloceanspaces.com/vitarela/ana-1685224883163-78901234567.mp4" download>
+        Clique aqui para fazer o download automaticamente2
+    </a> -->
+</body>
+
+</html>
