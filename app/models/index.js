@@ -12,6 +12,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     acquire: dbConfig.pool.acquire,
     idle: dbConfig.pool.idle,
   },
+  underscored: true
 });
 
 const db = {};
@@ -20,5 +21,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.photos = require("./Photo.js")(sequelize, Sequelize);
+db.users = require("./User.js")(sequelize, Sequelize);
+db.teachers = require("./Teacher.js")(sequelize, Sequelize);
 
 module.exports = db;

@@ -4,7 +4,7 @@
   "description": "Node.js Rest Apis with Express, Sequelize & MySQL",
   "main": "server.js",
   "scripts": {
-    "startCustom": "nodemon server.js",
+    "startN": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -18,21 +18,18 @@
   "author": "bezkoder",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.149.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "fs": "^0.0.1-security",
-    "multer": "^1.3.0",
-    "multer-s3": "^2.7.0",
+    "isomorphic-fetch": "^3.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
     "mysql2": "^2.3.3",
     "sequelize": "^6.28.0",
-    "uuid": "^9.0.0",
-    "adm-zip": "^0.5.10",
-    "archiver": "^5.3.1",
-    "isomorphic-fetch": "^3.0.0",
-    "moment": "^2.29.4"
+    "uuid": "^9.0.0"
   }
 }
