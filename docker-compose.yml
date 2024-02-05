@@ -4,7 +4,5 @@ services:
   app:
     build: .
     restart: always
-    volumes:
-      - ./:/app
     ports:
       - "3022:3022"
