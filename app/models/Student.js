@@ -28,6 +28,15 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'id'      // campo da tabela referenciada
             }
         },
+        shift: {
+            type: DataTypes.ENUM,
+            values: ['Matutino', 'Vespertino', 'Noturno'],
+            allowNull: true
+        },
+        school_grade: {
+            type: DataTypes.STRING,
+            allowNull: true
+        }
     }, {
         timestamps: true,
         createdAt: 'created_at',

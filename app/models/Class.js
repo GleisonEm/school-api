@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         academic_year: {
             type: DataTypes.INTEGER
-        }
+        },
     }, {
         timestamps: true,
         createdAt: 'created_at',

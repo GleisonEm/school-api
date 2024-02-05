@@ -20,7 +20,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.photos = require("./Photo.js")(sequelize, Sequelize);
 db.users = require("./User.js")(sequelize, Sequelize);
 db.teachers = require("./Teacher.js")(sequelize, Sequelize);
 db.students = require("./Student.js")(sequelize, Sequelize);

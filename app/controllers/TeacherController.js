@@ -13,7 +13,7 @@ const TeacherController = {
             const { qualifications } = req.body;
 
             // Criar usuário com transação
-            const createUser = await UserService.createUser({ ...req.body, type: 'professor' }, true, transaction);
+            const createUser = await UserService.createUser({ ...req.body, type: 'professor' }, false, transaction);
             if (!createUser) {
                 await transaction.rollback(); // Rollback se não criar o usuário
                 return res.status(400).json({ message: 'Erro ao criar usuário.' });

@@ -10,8 +10,8 @@ const StudentController = {
 
         try {
             // Dados do professor extraídos do corpo da requisição
-            const { birth_date, class_id } = req.body;
-
+            const { birth_date, class_id, shift, school_grade } = req.body;
+          
             // Criar usuário com transação
             const createUser = await UserService.createUser({ ...req.body, type: 'aluno' }, true, transaction);
             if (!createUser) {
@@ -25,6 +25,8 @@ const StudentController = {
                 parent_details: null,
                 user_id: createUser.dataValues.id,
                 class_id: class_id,
+                shift,
+                school_grade
             }, { transaction });
 
             await transaction.commit(); // Commit da transação se tudo correr bem

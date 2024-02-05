@@ -23,6 +23,22 @@ const UserService = {
                 }
             }
 
+            if (userData.cpf) {
+                const findUserEmail = await User.findOne({ where: { cpf: userData.cpf } });
+
+                if (findUserEmail) {
+                    throw new Error('Usuário com esse cpf já existe: ' + userData.cpf);
+                }
+            }
+
+            if (userData.rg) {
+                const findUserEmail = await User.findOne({ where: { rg: userData.rg } });
+
+                if (findUserEmail) {
+                    throw new Error('Usuário com esse rg já existe: ' + userData.rg);
+                }
+            }
+
             const hashedPassword = await bcrypt.hash(!generatePassword ? userData.password : '123456', 10);
             const newUser = {
                 ...userData,
