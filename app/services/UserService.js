@@ -1,21 +1,32 @@
 // userService.js
 const bcrypt = require('bcryptjs');
 const db = require("../models");
+const { gerarNumeroAleatorio } = require('../utils/Helper');
 const User = db.users;// Ajuste o caminho conforme sua estrutura de projeto
 
 const UserService = {
     async createUser(userData, generatePassword = false, transaction = null) {
         try {
-            const email = userData.email ? userData.email : '';
-            const findUser = await User.findOne({ where: { email } });
+
+            const username = userData.username ? userData.username : userData.name.trim().toLowerCase() + gerarNumeroAleatorio();
+            const findUser = await User.findOne({ where: { username } });
 
             if (findUser) {
-                throw new Error('Usuário já existe: ' + email);
+                throw new Error('Usuário com esse username já existe: ' + username);
+            }
+
+            if (userData.email) {
+                const findUserEmail = await User.findOne({ where: { email: userData.email } });
+
+                if (findUserEmail) {
+                    throw new Error('Usuário com esse email já existe: ' + userData.email);
+                }
             }
 
             const hashedPassword = await bcrypt.hash(!generatePassword ? userData.password : '123456', 10);
             const newUser = {
                 ...userData,
+                username: username,
                 password: hashedPassword
             };
 

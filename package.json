@@ -4,7 +4,7 @@
   "description": "Node.js Rest Apis with Express, Sequelize & MySQL",
   "main": "server.js",
   "scripts": {
-    "startN": "nodemon server.js",
+    "startn": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -28,6 +28,7 @@
     "isomorphic-fetch": "^3.0.0",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.29.4",
+    "moment-timezone": "^0.5.44",
     "mysql2": "^2.3.3",
     "sequelize": "^6.28.0",
     "uuid": "^9.0.0"

@@ -5,17 +5,34 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
-            references: {
-                model: 'users',
-                key: 'id'
-            }
+            autoIncrement: true
         },
         birth_date: {
             type: DataTypes.DATE
         },
         parent_details: {
             type: DataTypes.TEXT
-        }
+        },
+        user_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'users', // nome da tabela referenciada
+                key: 'id'      // campo da tabela referenciada
+            }
+        },
+        class_id: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: 'classes', // nome da tabela referenciada
+                key: 'id'      // campo da tabela referenciada
+            }
+        },
+    }, {
+        timestamps: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        tableName: 'students'
     });
 
     return Student;

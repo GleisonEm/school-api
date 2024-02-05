@@ -9,10 +9,10 @@ const UserService = require("../services/UserService");
 const usersController = {
     login: async (req, res) => {
         try {
-            const { email, password } = req.body;
+            const { username, password } = req.body;
 
             // Encontrar o usuário pelo e-mail
-            const user = await User.findOne({ where: { email } });
+            const user = await User.findOne({ where: { username } });
             if (!user) {
                 return res.status(401).json({ message: 'Authentication failed. User not found.' });
             }
@@ -26,7 +26,11 @@ const usersController = {
             // Gerar um token JWT
             const token = jwt.sign({ id: user.id, type: user.type }, process.env.JWT_TOKEN, { expiresIn: '8h' });
 
-            res.status(200).json({ message: 'Authentication successful', token });
+            res.status(200).json({ message: 'Authentication successful', user: {
+                id: user.id,
+                name: user.name,
+                token: token,
+            } });
         } catch (error) {
             res.status(500).json({ error: error.message });
         }

@@ -1,4 +1,3 @@
-// models/time_control.js
 module.exports = (sequelize, DataTypes) => {
     const TimeControl = sequelize.define('TimeControl', {
         id: {
@@ -13,17 +12,32 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'id'
             }
         },
+        class_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'classes',
+                key: 'id'
+            }
+        },
         entry_datetime: {
             type: DataTypes.DATE,
             allowNull: false
         },
         exit_datetime: {
-            type: DataTypes.DATE
+            type: DataTypes.DATE,
+            allowNull: true
         },
         total_hours_worked: {
-            type: DataTypes.DECIMAL(5, 2)
+            type: DataTypes.DECIMAL(5, 2),
+            allowNull: true
         }
-    });
+    },
+        {
+            timestamps: true,
+            createdAt: 'created_at',
+            updatedAt: 'updated_at',
+            tableName: 'time_control'
+        });
 
     return TimeControl;
 };

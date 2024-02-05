@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         user_id: {
             type: DataTypes.INTEGER,
-            allowNull: true,
             references: {
                 model: 'users', // nome da tabela referenciada
                 key: 'id'      // campo da tabela referenciada

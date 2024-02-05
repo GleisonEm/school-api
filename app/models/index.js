@@ -23,5 +23,9 @@ db.sequelize = sequelize;
 db.photos = require("./Photo.js")(sequelize, Sequelize);
 db.users = require("./User.js")(sequelize, Sequelize);
 db.teachers = require("./Teacher.js")(sequelize, Sequelize);
+db.students = require("./Student.js")(sequelize, Sequelize);
+db.classes = require("./Class.js")(sequelize, Sequelize);
+db.subjects = require("./Subject.js")(sequelize, Sequelize);
+db.timeControl = require("./TimeControl.js")(sequelize, Sequelize);
 
 module.exports = db;

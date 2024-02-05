@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         academic_year: {
             type: DataTypes.INTEGER
         }
+    }, {
+        timestamps: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        tableName: 'classes'
     });
 
     return Class;

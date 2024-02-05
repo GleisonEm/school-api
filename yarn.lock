@@ -597,7 +597,7 @@ minimatch@^5.0.1:
   dependencies:
     brace-expansion "^2.0.1"
 
-moment-timezone@^0.5.43:
+moment-timezone@^0.5.43, moment-timezone@^0.5.44:
   version "0.5.44"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.44.tgz#a64a4e47b68a43deeab5ae4eb4f82da77cdf595f"
   integrity sha512-nv3YpzI/8lkQn0U6RkLd+f0W/zy/JnoR5/EyPz/dNkPTBjA2jNLCVxaiQ8QpeLymhSZvX0wCL5s27NQWdOPwAw==
