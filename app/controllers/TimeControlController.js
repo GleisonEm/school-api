@@ -16,7 +16,7 @@ const TimeControlController = {
             }
 
             const newTimeControl = await TimeControl.create({
-                teacherFind.dataValues.id,
+                teacher_id: teacherFind.dataValues.id,
                 class_id,
                 entry_datetime: entry
             });
