@@ -2,6 +2,7 @@ const db = require("../models");
 const TimeControl = db.timeControl;
 const Teacher = db.teachers;
 const moment = require('moment-timezone');
+const Joker = require("../models/Joker");
 
 const TimeControlController = {
 
@@ -10,13 +11,14 @@ const TimeControlController = {
             const { teacher_id, class_id, entry_datetime } = req.body;
             const entry = moment(entry_datetime).tz("America/Recife");
 
-            const teacherFind = await Teacher.findByPk(teacher_id);
-            if (!teacherFind) {
+            const userFind = await Joker.query(`SELECT * FROM teachers WHERE user_id = ${teacher_id}`);
+
+            if (!userFind) {
                 return res.status(404).json({ error: 'Teacher not found' });
             }
 
             const newTimeControl = await TimeControl.create({
-                teacher_id: teacherFind.dataValues.id,
+                teacher_id: userFind.id,
                 class_id,
                 entry_datetime: entry
             });
