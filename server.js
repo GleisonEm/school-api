@@ -22,4 +22,5 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3022;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
+  console.log(`Versão do Node.js: ${process.version}`);
 });
