@@ -58,7 +58,7 @@ const TimeControlController = {
             }
 
             // Verifica se existe um controle de tempo aberto para esse professor e essa sala
-            const findTimeControl = await TimeControl.findOne({ where: { teacher_id: teacher_id, class_id: class_id, exit_datetime: null } });
+            const findTimeControl = await TimeControl.findOne({ where: { teacher_id: teacherFind.id, class_id: class_id, exit_datetime: null } });
 
             if (!findTimeControl) {
                 return res.status(400).json({ message: 'Não há registro de entrada para este professor nesta sala.' });
