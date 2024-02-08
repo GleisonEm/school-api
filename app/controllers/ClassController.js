@@ -1,5 +1,7 @@
 const db = require("../models");
+const Joker = require("../models/Joker");
 const Class = db.classes;
+const moment = require('moment-timezone');
 
 const ClassController = {
     // Função de listagem
@@ -12,14 +14,57 @@ const ClassController = {
             return res.status(500).json({ message: 'Erro interno do servidor. ' + error });
         }
     },
+    getWithStatus: async (req, res) => {
+        try {
+            const classes = await Joker.query("SELECT c.id, c.class_name, c.academic_year, CASE WHEN tc.class_id IS NOT NULL THEN 'busy' ELSE 'free' END AS status FROM classes c LEFT JOIN (SELECT DISTINCT class_id FROM time_control WHERE exit_datetime IS NULL) tc ON c.id = tc.class_id ORDER BY c.class_name;")
 
+            return res.status(200).json({ classes: classes });
+        } catch (error) {
+            return res.status(400).json({ error: error.message });
+        }
+    },
+    findOpenClass: async (req, res) => {
+        try {
+            const teacher_id = req.params.teacher_id;
+            const classFind = await Joker.query("SELECT c.id, c.class_name, c.academic_year, tc.entry_datetime, s.name AS subject_name, s.id AS subject_id FROM classes c LEFT JOIN (SELECT DISTINCT class_id, teacher_id, subject_id, entry_datetime FROM time_control WHERE exit_datetime IS NULL) tc ON c.id = tc.class_id LEFT JOIN subjects s ON tc.subject_id = s.id WHERE tc.teacher_id = " + teacher_id + ";")
+
+            return res.status(200).json(classFind);
+        } catch (error) {
+            return res.status(400).json({ error: error.message });
+        }
+    },
     find: async (req, res) => {
         try {
+            const classId = req.params.id
             const classFind = await Class.findByPk(req.params.id);
             if (!classFind) {
                 return res.status(404).json({ error: 'Class not found' });
             }
             return res.status(200).json(classFind);
+        } catch (error) {
+            return res.status(400).json({ error: error.message });
+        }
+    },
+    findWithTimeControl: async (req, res) => {
+        try {
+
+            const classId = req.params.id
+            let classIsbusy = false
+            const classFind = (await Joker.query("SELECT c.id, c.class_name, c.academic_year, tc.entry_datetime, s.name AS subject_name, s.id AS subject_id, u.name AS teaching_in_the_room, t.id AS teaching_in_the_room_id FROM classes c LEFT JOIN (SELECT DISTINCT class_id, teacher_id, subject_id, entry_datetime FROM time_control WHERE exit_datetime IS NULL) tc ON c.id = tc.class_id LEFT JOIN subjects s ON tc.subject_id = s.id LEFT JOIN teachers t ON tc.teacher_id = t.id LEFT JOIN users u ON t.user_id = u.id WHERE c.id = " + classId + ";")).shift()
+
+            if (!classFind) {
+                return res.status(404).json({ error: 'Turma não encontrada' });
+            }
+
+            if (classFind.entry_datetime) {
+                classFind.entry_datetime = moment(classFind.entry_datetime).tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
+            }
+
+            if (classFind.entry_datetime) {
+                classIsbusy = true
+            }
+
+            return res.status(200).json({...classFind, is_busy: classIsbusy});
         } catch (error) {
             return res.status(400).json({ error: error.message });
         }

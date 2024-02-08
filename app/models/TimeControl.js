@@ -19,6 +19,13 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'id'
             }
         },
+        subject_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'subjects',
+                key: 'id'
+            }
+        },
         entry_datetime: {
             type: DataTypes.DATE,
             allowNull: false

@@ -5,7 +5,7 @@ const Joker = {
     query: (sql) => {
         return db.sequelize.query(sql, { type: QueryTypes.SELECT })
         .then(results => {
-            return results.shift();
+            return results;
 
         })
         .catch(error => {
