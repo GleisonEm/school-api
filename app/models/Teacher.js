@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: true
         },
+        code: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
         admission_date: {
             type: DataTypes.DATE,
             allowNull: true

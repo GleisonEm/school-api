@@ -13,6 +13,13 @@ module.exports = (sequelize, DataTypes) => {
         academic_year: {
             type: DataTypes.INTEGER
         },
+        shift_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'shifts', // nome da tabela referenciada
+                key: 'id'      // campo da tabela referenciada
+            }
+        },
     }, {
         timestamps: true,
         createdAt: 'created_at',

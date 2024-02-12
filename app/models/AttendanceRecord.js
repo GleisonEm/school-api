@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        class_id: {
+        time_control_id: {
             type: DataTypes.INTEGER,
             references: {
-                model: 'classes',
+                model: 'time_control',
                 key: 'id'
             }
         },
@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
             values: ['present', 'absent', 'justified'],
             allowNull: false
         }
+    }, {
+        timestamps: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        tableName: 'attendance_records'
     });
 
     return AttendanceRecord;

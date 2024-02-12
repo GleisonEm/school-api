@@ -26,5 +26,7 @@ db.students = require("./Student.js")(sequelize, Sequelize);
 db.classes = require("./Class.js")(sequelize, Sequelize);
 db.subjects = require("./Subject.js")(sequelize, Sequelize);
 db.timeControl = require("./TimeControl.js")(sequelize, Sequelize);
+db.shifts = require("./Shift.js")(sequelize, Sequelize);
+db.attendanceRecords = require("./AttendanceRecord.js")(sequelize, Sequelize);
 
 module.exports = db;
