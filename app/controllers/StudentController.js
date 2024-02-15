@@ -1,6 +1,7 @@
 // Importe os modelos e quaisquer outros módulos necessários
 const db = require("../models");
 const Joker = require("../models/Joker");
+const User = db.users;
 const Student = db.students;
 const UserService = require("../services/UserService");
 const sequelize = db.sequelize
@@ -21,6 +22,54 @@ const StudentController = {
         } catch (error) {
             console.error('Erro ao listar alunos:', error);
             return res.status(500).json({ message: 'Erro interno do servidor. ' + error });
+        }
+    },
+    async get(req, res) {
+        try {
+            const studentsSql = `
+                SELECT s.*, u.name, c.class_name as class_name, sf.name as shift_name
+                FROM students AS s
+                JOIN users AS u ON s.user_id = u.id
+                JOIN classes AS c ON s.class_id = c.id
+                JOIN shifts AS sf ON c.shift_id = sf.id;
+            `;
+            const students = await Joker.query(studentsSql);
+            return res.json(students);
+
+        } catch (error) {
+            console.error('Erro ao listar alunos:', error);
+            return res.status(500).json({ message: 'Erro interno do servidor. ' + error });
+        }
+    },
+    async delete(req, res) {
+        const transaction = await sequelize.transaction(); // Iniciar uma nova transação
+
+        try {
+            // Dados do professor extraídos do corpo da requisição
+            const userId = req.params.user_id;
+
+            // Criar usuário com transação
+            const findUser = await User.findByPk(userId);
+            console.log(findUser)
+            if (!findUser) {
+                await transaction.rollback(); // Rollback se não criar o usuário
+                return res.status(400).json({ message: 'Erro ao deletar aluno.' });
+            }
+
+            await findUser.destroy({ transaction }); // Correção aqui
+
+            // Criar o professor com a mesma transação
+            const student = await Student.findOne({ where: { user_id: userId } }, { transaction });
+
+            await student.destroy({ transaction }); // Correção aqui
+
+            await transaction.commit(); // Commit da transação se tudo correr bem
+            return res.status(201).json(student);
+        } catch (error) {
+            console.log(error);
+            await transaction.rollback(); // Rollback se ocorrer um erro
+            console.error('Erro ao deletar aluno:', error);
+            return res.status(400).json({ message: 'Erro interno do servidor. ' + error });
         }
     },
     async create(req, res) {

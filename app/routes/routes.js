@@ -13,12 +13,17 @@ router.post("/login", UserController.login);
 router.post("/users", UserController.createUser);
 
 router.post("/teachers", TeacherController.create);
+router.get("/teachers", TeacherController.get);
+router.delete("/teachers/:user_id", TeacherController.delete);
 
 router.post("/students", StudentController.create);
+router.get("/students/all", StudentController.get);
+router.delete("/students/:user_id", StudentController.delete);
 router.get("/students/:class_id", StudentController.listByClass);
 
 router.post("/classes", ClassController.create)
 router.get("/classes", ClassController.list)
+router.delete("/classes/:class_id", ClassController.delete);
 router.get("/classes/status", ClassController.getWithStatus)
 router.get("/classes/:id", ClassController.find)
 router.get("/classes/:id/time-control", ClassController.findWithTimeControl)

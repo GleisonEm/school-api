@@ -103,7 +103,43 @@ const ClassController = {
             console.error('Erro ao criar classe:', error);
             return res.status(400).json({ message: 'Erro interno do servidor. ' + error });
         }
-    }
+    },
+     async get(req, res) {
+        try {
+            const classesSql = `
+                SELECT c.*, s.name as shift_name
+                FROM classes AS c
+                JOIN shifts AS s ON c.shift_id = s.id;
+            `;
+            const classes = await Joker.query(classesSql);
+            return res.json(classes);
+
+        } catch (error) {
+            console.error('Erro ao listar salas:', error);
+            return res.status(500).json({ message: 'Erro interno do servidor. ' + error });
+        }
+    },
+    async delete(req, res) {
+        const transaction = await sequelize.transaction(); // Iniciar uma nova transação
+
+        try {
+            // Dados do professor extraídos do corpo da requisição
+            const classId = req.params.class_id;
+
+            // Criar o professor com a mesma transação
+            const classes = await Class.findByPk(classId);
+
+            await classes.destroy({ transaction }); // Correção aqui
+
+            await transaction.commit(); // Commit da transação se tudo correr bem
+            return res.status(201).json(classes);
+        } catch (error) {
+            console.log(error);
+            await transaction.rollback(); // Rollback se ocorrer um erro
+            console.error('Erro ao deletar classe:', error);
+            return res.status(400).json({ message: 'Erro interno do servidor. ' + error });
+        }
+    },
 };
 
 module.exports = ClassController;
