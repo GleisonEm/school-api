@@ -10,6 +10,8 @@ const AttendanceController = require("../controllers/AttendanceController.js");
 const ShiftController = require("../controllers/ShiftController.js");
 
 router.post("/login", UserController.login);
+router.post("/teachers/login", UserController.loginTeacher);
+router.post("/admin/login", UserController.loginAdmin);
 router.post("/users", UserController.createUser);
 
 router.post("/teachers", TeacherController.create);
@@ -35,7 +37,8 @@ router.get("/subjects", SubjectController.list)
 router.post("/time-control/entry", TimeControlController.registerEntry)
 router.post("/time-control/exit", TimeControlController.registerExit)
 
-router.get("/reports", ReportController.getData)
+router.get("/reports/teachers", ReportController.getDataTeacher)
+router.get("/reports/students", ReportController.getDataStudent)
 router.get("/reports/download", ReportController.download)
 
 router.post("/shifts", ShiftController.create)
