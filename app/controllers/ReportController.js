@@ -74,7 +74,8 @@ const ReportController = {
                 ar.time_control_id as time_control_id,
                 tc.entry_datetime, tc.exit_datetime, tc.total_hours_worked,
                 ut.name as teacher_name,
-                c.class_name as class_name
+                c.class_name as class_name,
+                sh.name as shift_name
             FROM
                 attendance_records ar
             JOIN students s ON ar.student_id = s.id
@@ -95,6 +96,11 @@ const ReportController = {
             if (req.query.teacher_id) {
                 console.log('entrei aq')
                 querySql += ` WHERE t.id = ${parseInt(req.query.teacher_id)}`
+            }
+
+            if (req.query.class_id) {
+                console.log('entrei aq')
+                querySql += ` AND c.id = ${parseInt(req.query.class_id)}`
             }
 
             querySql += ' ORDER BY sub.name ASC, u.name ASC';
@@ -139,6 +145,7 @@ const ReportController = {
                     const teacherName = records[0].teacher_name
                     const day = records[0].attendance_date
                     const className =  records[0].class_name
+                    const shiftName = records[0].shift_name
 
                     return {
                         time_control_id: parseInt(time_control_id),
@@ -146,6 +153,7 @@ const ReportController = {
                         entry_datetime: entryDatetime,
                         exit_datetime: exitDatetime,
                         class_name: className,
+                        shift_name: shiftName,
                         total_hours: totalHoursWorked.toFixed(2),
                         day: day,
                         teacher_name: teacherName,
