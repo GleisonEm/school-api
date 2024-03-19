@@ -2,6 +2,7 @@ const db = require("../models");
 const Joker = require("../models/Joker");
 const Class = db.classes;
 const moment = require('moment-timezone');
+const sequelize = db.sequelize
 
 const ClassController = {
     // Função de listagem
