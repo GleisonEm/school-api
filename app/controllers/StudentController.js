@@ -3,6 +3,7 @@ const db = require("../models");
 const Joker = require("../models/Joker");
 const User = db.users;
 const Student = db.students;
+const AttendanceRecords = db.attendanceRecords;
 const UserService = require("../services/UserService");
 const sequelize = db.sequelize
 
@@ -56,12 +57,22 @@ const StudentController = {
                 return res.status(400).json({ message: 'Erro ao deletar aluno.' });
             }
 
+
+
+            const student = await Student.findOne({ where: { user_id: userId } }, { transaction });
+
+            await AttendanceRecords.destroy({
+                where: {
+                    student_id: student.id // Condição para filtrar os estudantes que deseja excluir
+                }
+            });
+
+            await student.destroy({ transaction }); // Correção aqui
+
             await findUser.destroy({ transaction }); // Correção aqui
 
             // Criar o professor com a mesma transação
-            const student = await Student.findOne({ where: { user_id: userId } }, { transaction });
 
-            await student.destroy({ transaction }); // Correção aqui
 
             await transaction.commit(); // Commit da transação se tudo correr bem
             return res.status(201).json(student);
@@ -101,6 +112,30 @@ const StudentController = {
             await transaction.rollback(); // Rollback se ocorrer um erro
             console.error('Erro ao criar aluno:', error);
             return res.status(400).json({ message: 'Erro interno do servidor. ' + error });
+        }
+    },
+    async updateClass(req, res) {
+        const transaction = await sequelize.transaction();
+
+        try {
+            const { studentId } = req.params; // Id do estudante a ser atualizado
+            const { class_id } = req.body; // Novo ID da classe
+
+            // Encontre o estudante a ser atualizado
+            const student = await Student.findByPk(studentId);
+            if (!student) {
+                return res.status(404).json({ message: 'Estudante não encontrado.' });
+            }
+
+            // Atualize a classe do estudante
+            await student.update({ class_id }, { transaction });
+
+            await transaction.commit();
+            return res.status(200).json({ message: 'Classe do estudante atualizada com sucesso.' });
+        } catch (error) {
+            await transaction.rollback();
+            console.error('Erro ao atualizar classe do estudante:', error);
+            return res.status(500).json({ message: 'Erro interno do servidor.' });
         }
     }
 };
